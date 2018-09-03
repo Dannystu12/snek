@@ -35,7 +35,7 @@ Game::Game( MainWindow& wnd )
 {
 }
 
-int Game::snakeMovePeriod = 20;
+float Game::snakeMovePeriod = 0.333f;
 
 void Game::Go()
 {
@@ -47,6 +47,8 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+
+
 	if (gameIsOver) return;
 
 	if (!gameHasStarted)
@@ -58,6 +60,8 @@ void Game::UpdateModel()
 		return;
 	}
 
+	float dt = ft.Mark();
+	cumlativeTime += dt;
 
 	if(wnd.kbd.KeyIsPressed(VK_UP))
 	{
@@ -80,10 +84,11 @@ void Game::UpdateModel()
 			deltaLoc = { 1, 0 };
 	}
 
-	snakeMoveCounter++;
+	
 
-	if (snakeMoveCounter >= snakeMovePeriod)
+	if (cumlativeTime >= snakeMovePeriod)
 	{
+		cumlativeTime = 0.0f;
 		const Location nextLoc = snake.GetNextHeadLocation(deltaLoc);
 		if (!brd.IsInsideBoard(nextLoc) ||
 			snake.IsInTileExceptEnd(nextLoc) ||
@@ -97,11 +102,10 @@ void Game::UpdateModel()
 			if (eating)
 			{
 				snake.Grow();
-				snakeMovePeriod = std::max(snakeMovePeriod - 1, minMovePeriod);
+				snakeMovePeriod = std::max(snakeMovePeriod - 0.01f, minMovePeriod);
 			}
 			lastDeltaLoc = deltaLoc;
 			snake.MoveBy(deltaLoc);
-			snakeMoveCounter = 0;
 			if (eating)
 			{
 				goal.Respawn(rng, brd, snake, om);

@@ -24,10 +24,11 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "Board.h"
-#include <random>
 #include "Snake.h"
 #include "Goal.h"
 #include "ObstacleManager.h"
+#include "FrameTimer.h"
+#include <random>
 
 class Game
 {
@@ -47,13 +48,14 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	FrameTimer ft;
+	float cumlativeTime = 0.0f;
 	Board brd;
 	Snake snake;
 	Location deltaLoc{ 1, 0 };
 	Location lastDeltaLoc{ 1, 0 };
-	static int snakeMovePeriod;
-	static constexpr int minMovePeriod = 10;
-	int snakeMoveCounter = 0;
+	static float snakeMovePeriod;
+	static constexpr float minMovePeriod = 0.1f;
 	bool gameIsOver = false;
 	std::mt19937 rng;
 	ObstacleManager om;
