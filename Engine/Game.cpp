@@ -60,7 +60,7 @@ void Game::UpdateModel()
 		return;
 	}
 
-	float dt = ft.Mark();
+	const float dt = ft.Mark();
 	cumlativeTime += dt;
 
 	if(wnd.kbd.KeyIsPressed(VK_UP))
@@ -88,7 +88,7 @@ void Game::UpdateModel()
 
 	if (cumlativeTime >= snakeMovePeriod)
 	{
-		cumlativeTime = 0.0f;
+		cumlativeTime -= snakeMovePeriod;
 		const Location nextLoc = snake.GetNextHeadLocation(deltaLoc);
 		if (!brd.IsInsideBoard(nextLoc) ||
 			snake.IsInTileExceptEnd(nextLoc) ||
