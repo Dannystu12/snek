@@ -56,6 +56,7 @@ void Game::UpdateModel()
 		if (wnd.kbd.KeyIsPressed(VK_RETURN))
 		{
 			gameHasStarted = true;
+			ft.Mark();
 		}
 		return;
 	}
